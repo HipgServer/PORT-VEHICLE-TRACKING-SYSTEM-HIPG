@@ -62,12 +62,19 @@ export function DriverDutyController({
 
   const engineRef = useRef<GPSTrackingEngine | null>(null);
 
-  // 1. Pre-fill Perry No from sessionStorage if passed from login
+  // 1. Pre-fill Perry No and Driver Name from sessionStorage / localStorage as default
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedPerry = sessionStorage.getItem("driver_prefill_perry");
+      const storedPerry =
+        sessionStorage.getItem("driver_prefill_perry") ||
+        localStorage.getItem("peri_saved_perry_no");
       if (storedPerry && !perryNo) {
         setPerryNo(storedPerry);
+      }
+
+      const storedName = localStorage.getItem("peri_saved_driver_name");
+      if (storedName && (!driverName || driverName === "Driver")) {
+        setDriverName(storedName);
       }
     }
   }, []);
@@ -212,6 +219,14 @@ export function DriverDutyController({
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.error || "Failed to start duty tracking");
+      }
+
+      // Save defaults to localStorage for quick restarts
+      if (typeof window !== "undefined") {
+        localStorage.setItem("peri_saved_perry_no", perryNo.trim().toUpperCase());
+        if (driverName.trim()) {
+          localStorage.setItem("peri_saved_driver_name", driverName.trim());
+        }
       }
 
       setActiveSession(data.dutySession);

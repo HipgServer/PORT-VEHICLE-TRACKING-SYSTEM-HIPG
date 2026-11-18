@@ -43,13 +43,16 @@ export function Navbar({ socketConnected = false }: NavbarProps) {
     router.push("/login");
   };
 
-  const navLinks = [
-    { label: "Live Dashboard", href: "/dashboard", icon: Map },
-    { label: "Driver Tracking", href: "/driver", icon: Compass },
-    { label: "Port Yards", href: "/yards", icon: Layers },
-    { label: "History Trail", href: "/history", icon: History },
-    { label: "Audit Logs", href: "/audit", icon: FileText },
-  ];
+  const isDriver = currentUser?.role === "driver";
+  const navLinks = isDriver
+    ? [{ label: "Driver Duty Tracking", href: "/driver", icon: Compass }]
+    : [
+        { label: "Live Dashboard", href: "/dashboard", icon: Map },
+        { label: "Driver Tracking", href: "/driver", icon: Compass },
+        { label: "Port Yards", href: "/yards", icon: Layers },
+        { label: "History Trail", href: "/history", icon: History },
+        { label: "Audit Logs", href: "/audit", icon: FileText },
+      ];
 
   return (
     <nav className="bg-slate-900 border-b border-slate-800 text-white sticky top-0 z-40">

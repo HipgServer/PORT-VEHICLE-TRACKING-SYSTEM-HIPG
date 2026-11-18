@@ -1,16 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Truck, ShieldCheck, Compass, LogIn, AlertCircle, User, ArrowRight } from "lucide-react";
+import { Truck, ShieldCheck, Compass, LogIn, AlertCircle, User, ArrowRight, CheckSquare } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"driver" | "admin">("driver");
 
-  // Driver fields
+  // Driver fields (auto-loaded from localStorage as default)
   const [driverName, setDriverName] = useState("");
   const [perryNo, setPerryNo] = useState("");
+  const [rememberMe, setRememberMe] = useState(true);
 
   // Admin fields
   const [username, setUsername] = useState("admin");
@@ -18,6 +19,16 @@ export default function LoginPage() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Load saved default driver details on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedName = localStorage.getItem("peri_saved_driver_name");
+      const savedPerry = localStorage.getItem("peri_saved_perry_no");
+      if (savedName) setDriverName(savedName);
+      if (savedPerry) setPerryNo(savedPerry);
+    }
+  }, []);
 
   const handleDriverLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,6 +41,19 @@ export default function LoginPage() {
     setError("");
 
     try {
+      // Save details to localStorage so they are remembered as default for future logins
+      if (typeof window !== "undefined") {
+        if (rememberMe) {
+          localStorage.setItem("peri_saved_driver_name", driverName.trim());
+          if (perryNo.trim()) {
+            localStorage.setItem("peri_saved_perry_no", perryNo.trim().toUpperCase());
+          }
+        }
+        if (perryNo.trim()) {
+          sessionStorage.setItem("driver_prefill_perry", perryNo.trim().toUpperCase());
+        }
+      }
+
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -42,11 +66,6 @@ export default function LoginPage() {
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.error || "Driver sign-in failed");
-      }
-
-      // Store initial Perry No in sessionStorage so driver page pre-fills it
-      if (perryNo.trim() && typeof window !== "undefined") {
-        sessionStorage.setItem("driver_prefill_perry", perryNo.trim().toUpperCase());
       }
 
       router.push("/driver");
@@ -186,6 +205,19 @@ export default function LoginPage() {
                     className="w-full pl-10 pr-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   />
                 </div>
+              </div>
+
+              <div className="flex items-center space-x-2 pt-1 pb-1">
+                <input
+                  type="checkbox"
+                  id="rememberMe"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="w-4 h-4 rounded bg-slate-800 border-slate-700 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                />
+                <label htmlFor="rememberMe" className="text-xs text-slate-300 cursor-pointer select-none">
+                  Remember my details as default on this device
+                </label>
               </div>
 
               <button
