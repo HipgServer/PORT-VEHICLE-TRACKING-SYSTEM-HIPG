@@ -206,10 +206,11 @@ export default function DashboardPage() {
             </div>
             <div className="flex-1 p-2">
               <PortMap
-                yards={yards}
+                yards={[]}
                 vehicles={vehicles}
                 selectedVehicleId={selectedVehicleId}
                 onSelectVehicle={setSelectedVehicleId}
+                showYards={false}
               />
             </div>
           </div>

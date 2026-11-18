@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { IVehicleView } from "@/lib/types";
 import { VehicleStatusBadge } from "./VehicleStatusBadge";
-import { Truck, Navigation, AlertCircle, Wrench, Search, MapPin } from "lucide-react";
+import { Truck, Navigation, AlertCircle, Wrench, Search, MapPin, User } from "lucide-react";
 
 interface VehicleTableProps {
   vehicles: any[];
@@ -69,7 +69,7 @@ export function VehicleTable({
             <tr>
               <th className="py-3 px-4">Vehicle</th>
               <th className="py-3 px-3">Tracking Status</th>
-              <th className="py-3 px-3">Assigned Yard</th>
+              <th className="py-3 px-3">Active Driver</th>
               <th className="py-3 px-3">Telemetry</th>
               <th className="py-3 px-4 text-right">Actions</th>
             </tr>
@@ -121,19 +121,14 @@ export function VehicleTable({
                   </td>
 
                   <td className="py-3 px-3">
-                    {v.currentYard ? (
-                      <div className="flex items-center space-x-1.5">
-                        <span
-                          className="w-2 h-2 rounded-full"
-                          style={{ backgroundColor: v.currentYard.color || "#3b82f6" }}
-                        />
-                        <span className="font-semibold text-slate-200 text-xs">
-                          {v.currentYard.code}
-                        </span>
+                    <div className="flex items-center space-x-1.5">
+                      <div className="w-5 h-5 rounded-md bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400">
+                        <User className="w-3 h-3" />
                       </div>
-                    ) : (
-                      <span className="text-slate-500 text-[11px]">Outside Yards</span>
-                    )}
+                      <span className="font-semibold text-slate-200 text-xs">
+                        {v.assignedDriverName || "Unassigned"}
+                      </span>
+                    </div>
                   </td>
 
                   <td className="py-3 px-3">

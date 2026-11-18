@@ -13,6 +13,7 @@ interface PortMapProps {
   center?: [number, number]; // [lng, lat]
   zoom?: number;
   showBreadcrumbTrail?: [number, number][]; // optional history path
+  showYards?: boolean; // Controls whether to draw yard polygon overlays on the map
 }
 
 const ENV_CENTER: [number, number] = [
@@ -28,6 +29,7 @@ export function PortMap({
   center = ENV_CENTER,
   zoom = 14.8,
   showBreadcrumbTrail,
+  showYards = false, // Clean map by default (no yard polygons or boxes)
 }: PortMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
@@ -82,10 +84,19 @@ export function PortMap({
     };
   }, []);
 
-  // 2. Render Yard GeoJSON Polygons
+  // 2. Render Yard GeoJSON Polygons (Only if explicitly enabled via showYards)
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !mapLoaded || yards.length === 0) return;
+    if (!map || !mapLoaded) return;
+
+    // If showYards is false or yards is empty, ensure yard layers/sources are removed
+    if (!showYards || yards.length === 0) {
+      if (map.getLayer("yards-labels")) map.removeLayer("yards-labels");
+      if (map.getLayer("yards-outline")) map.removeLayer("yards-outline");
+      if (map.getLayer("yards-fill")) map.removeLayer("yards-fill");
+      if (map.getSource("yards-source")) map.removeSource("yards-source");
+      return;
+    }
 
     const geojsonData: GeoJSON.FeatureCollection = {
       type: "FeatureCollection",
@@ -154,7 +165,7 @@ export function PortMap({
         },
       });
     }
-  }, [mapLoaded, yards]);
+  }, [mapLoaded, yards, showYards]);
 
   // 3. Render Historical Breadcrumb Trail if present
   useEffect(() => {

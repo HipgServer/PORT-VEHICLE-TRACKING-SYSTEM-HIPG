@@ -59,7 +59,8 @@ export default function HistoryPage() {
         {/* Map */}
         <div className="lg:col-span-8 min-h-[450px] bg-slate-900 border border-slate-800 rounded-2xl p-2 shadow-xl flex flex-col">
           <PortMap
-            yards={yards}
+            yards={[]}
+            showYards={false}
             vehicles={
               activePoint
                 ? [
