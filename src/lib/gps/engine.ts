@@ -26,6 +26,7 @@ export class GPSTrackingEngine {
   private currentStatus: TrackingStatus = "DUTY_ENDED";
   private uploadBackoffMs: number = 1000;
   private isUploading: boolean = false;
+  private suspensionTimer: any = null;
 
   constructor(config: GpsEngineConfig) {
     this.config = {
@@ -203,8 +204,16 @@ export class GPSTrackingEngine {
   private attachLifecycleListeners(): void {
     document.addEventListener("visibilitychange", async () => {
       if (document.visibilityState === "hidden") {
-        this.handleApplicationSuspended("Browser visibility changed to hidden");
+        // Allow a 15-second grace period before marking interrupted (e.g. quick app switch or notification check)
+        if (this.suspensionTimer) clearTimeout(this.suspensionTimer);
+        this.suspensionTimer = setTimeout(() => {
+          this.handleApplicationSuspended("Browser visibility changed to hidden");
+        }, 15000);
       } else if (document.visibilityState === "visible") {
+        if (this.suspensionTimer) {
+          clearTimeout(this.suspensionTimer);
+          this.suspensionTimer = null;
+        }
         await this.handleApplicationResumed("Browser visibility restored to active");
       }
     });
@@ -214,6 +223,10 @@ export class GPSTrackingEngine {
     });
 
     window.addEventListener("pageshow", async () => {
+      if (this.suspensionTimer) {
+        clearTimeout(this.suspensionTimer);
+        this.suspensionTimer = null;
+      }
       await this.handleApplicationResumed("Page reopened");
     });
 
@@ -280,6 +293,15 @@ export class GPSTrackingEngine {
         (pos) => this.handleGeolocationSuccess(pos),
         (err) => this.handleGeolocationError(err),
         { enableHighAccuracy: true, timeout: 10000 }
+      );
+    }
+
+    // Immediately acquire a fresh GPS sample and upload to resume ONLINE status on server
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => this.handleGeolocationSuccess(pos),
+        () => {},
+        { enableHighAccuracy: true, timeout: 5000 }
       );
     }
 
