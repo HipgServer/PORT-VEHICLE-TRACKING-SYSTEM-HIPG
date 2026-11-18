@@ -5,6 +5,8 @@ import { DutySession, Driver, Vehicle, LatestLocation, AuditLog } from "@/lib/db
 import { broadcastVehicleStatus } from "@/lib/socket/server";
 import { Types } from "mongoose";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   try {
     const auth = await authenticateRequest(req);

@@ -3,6 +3,8 @@ import { removeAuthCookie } from "@/lib/auth/cookies";
 import { authenticateRequest } from "@/lib/auth/middleware";
 import { AuditLog } from "@/lib/db/models";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   try {
     const auth = await authenticateRequest(req);

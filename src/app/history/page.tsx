@@ -83,7 +83,7 @@ export default function HistoryPage() {
             center={
               breadcrumbTrail.length > 0
                 ? breadcrumbTrail[0]
-                : [81.1180, 6.1205]
+                : [81.0940, 6.1235]
             }
           />
         </div>

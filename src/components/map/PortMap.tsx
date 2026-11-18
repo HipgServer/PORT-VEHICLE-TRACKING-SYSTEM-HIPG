@@ -20,8 +20,8 @@ export function PortMap({
   vehicles = [],
   selectedVehicleId,
   onSelectVehicle,
-  center = [81.1180, 6.1205],
-  zoom = 14.5,
+  center = [81.0940, 6.1235],
+  zoom = 14.8,
   showBreadcrumbTrail,
 }: PortMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);

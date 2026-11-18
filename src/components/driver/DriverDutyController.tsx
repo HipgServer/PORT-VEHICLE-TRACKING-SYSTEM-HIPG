@@ -178,8 +178,8 @@ export function DriverDutyController({
 
     try {
       // Obtain GPS coordinates
-      let lat = 6.1205;
-      let lng = 81.1180;
+      let lat = 6.1235;
+      let lng = 81.0940;
 
       if (navigator.geolocation) {
         try {

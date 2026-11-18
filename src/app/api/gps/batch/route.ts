@@ -4,6 +4,8 @@ import { processGpsRecord } from "@/lib/gps/processor";
 import { connectDB } from "@/lib/db/connection";
 import { Driver } from "@/lib/db/models";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   try {
     const auth = await authenticateRequest(req);

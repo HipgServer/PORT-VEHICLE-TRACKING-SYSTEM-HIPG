@@ -5,6 +5,8 @@ import { signToken } from "@/lib/auth/jwt";
 import { setAuthCookie } from "@/lib/auth/cookies";
 import bcrypt from "bcryptjs";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();

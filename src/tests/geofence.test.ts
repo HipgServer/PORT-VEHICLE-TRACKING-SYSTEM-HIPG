@@ -15,8 +15,8 @@ export async function testGeofencing(): Promise<boolean> {
     throw new Error("Yard RY-01 not found. Seed database before running tests.");
   }
 
-  // 1. Point inside Ro-Ro Yard 1: [81.1155, 6.1225]
-  const insideCoords: [number, number] = [81.1155, 6.1225];
+  // 1. Point inside Ro-Ro Yard 1: [81.0935, 6.1258]
+  const insideCoords: [number, number] = [81.0935, 6.1258];
   const detectedYard = await findContainingYard(insideCoords);
   if (!detectedYard || detectedYard.code !== "RY-01") {
     throw new Error(`Expected point inside RY-01, but detected: ${detectedYard?.code}`);

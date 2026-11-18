@@ -4,6 +4,8 @@ import { DutySession, LatestLocation, Notification, AuditLog } from "@/lib/db/mo
 import { broadcastTrackingInterrupted, broadcastVehicleStatus } from "@/lib/socket/server";
 import { Types } from "mongoose";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   try {
     const { vehicleId, dutySessionId, interruptedAt, reason } = await req.json();

@@ -4,6 +4,8 @@ import { processGpsRecord } from "@/lib/gps/processor";
 import { connectDB } from "@/lib/db/connection";
 import { Driver, Vehicle } from "@/lib/db/models";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   try {
     // 1. Authenticate Request (Supports JWT Cookies, Bearer token, or Device API Keys)

@@ -4,6 +4,8 @@ import { connectDB } from "@/lib/db/connection";
 import { Vehicle, Driver, DutySession, LatestLocation, AuditLog, User } from "@/lib/db/models";
 import { Types } from "mongoose";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   try {
     const auth = await authenticateRequest(req);
@@ -150,7 +152,7 @@ export async function POST(req: NextRequest) {
         dutySessionId: dutySession._id,
         trackingStatus: "ONLINE",
         lastAcceptedGpsTime: new Date(),
-        location: startLocation || { type: "Point", coordinates: [81.1180, 6.1205] },
+        location: startLocation || { type: "Point", coordinates: [81.0940, 6.1235] },
       },
       { upsert: true }
     );

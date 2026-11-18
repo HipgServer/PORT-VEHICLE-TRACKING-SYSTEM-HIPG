@@ -4,6 +4,8 @@ import { connectDB } from "@/lib/db/connection";
 import { Vehicle, Driver, DutySession, LatestLocation, AuditLog } from "@/lib/db/models";
 import { Types } from "mongoose";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   try {
     const auth = await authenticateRequest(req);
