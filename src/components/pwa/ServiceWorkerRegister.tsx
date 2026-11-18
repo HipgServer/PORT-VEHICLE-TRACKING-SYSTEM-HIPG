@@ -6,10 +6,34 @@ export function ServiceWorkerRegister() {
   const [updateAvailable, setUpdateAvailable] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("/sw.js")
-        .then((registration) => {
+    if (typeof window === "undefined" || !("serviceWorker" in navigator)) return;
+
+    // In local development, unregister service workers to prevent stale chunks & hydration mismatches
+    const isDev =
+      process.env.NODE_ENV === "development" ||
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1";
+
+    if (isDev) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (const reg of registrations) {
+          reg.unregister();
+        }
+      });
+      if ("caches" in window) {
+        caches.keys().then((keys) => {
+          keys.forEach((key) => {
+            if (key.startsWith("peri-")) caches.delete(key);
+          });
+        });
+      }
+      return;
+    }
+
+    // In production, register the Service Worker for offline PWA capabilities
+    navigator.serviceWorker
+      .register("/sw.js")
+      .then((registration) => {
           console.log("[PWA] Service Worker registered with scope:", registration.scope);
 
           registration.onupdatefound = () => {
@@ -30,7 +54,6 @@ export function ServiceWorkerRegister() {
         .catch((error) => {
           console.warn("[PWA] Service Worker registration failed:", error);
         });
-    }
   }, []);
 
   if (!updateAvailable) return null;

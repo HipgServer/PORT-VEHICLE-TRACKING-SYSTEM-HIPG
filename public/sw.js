@@ -3,7 +3,7 @@
  * Version: v1.0.0
  */
 
-const CACHE_VERSION = "peri-v1.0.0";
+const CACHE_VERSION = "peri-v1.0.2";
 const STATIC_CACHE_NAME = `peri-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE_NAME = `peri-dynamic-${CACHE_VERSION}`;
 
@@ -81,9 +81,28 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // 4. Cache-First Strategy for static immutable assets (JS, CSS, fonts, SVG icons)
+  // 4. Network-First Strategy for Next.js static JS/CSS to prevent stale hydration mismatch
+  if (url.pathname.startsWith("/_next/static/")) {
+    event.respondWith(
+      fetch(request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseToCache = networkResponse.clone();
+            caches.open(STATIC_CACHE_NAME).then((cache) => {
+              cache.put(request, responseToCache);
+            });
+          }
+          return networkResponse;
+        })
+        .catch(() => {
+          return caches.match(request);
+        })
+    );
+    return;
+  }
+
+  // 5. Cache-First Strategy for static media and fonts (icons, SVGs, WOFF2)
   if (
-    url.pathname.startsWith("/_next/static/") ||
     url.pathname.startsWith("/icons/") ||
     url.pathname.endsWith(".svg") ||
     url.pathname.endsWith(".png") ||
