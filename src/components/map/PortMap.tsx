@@ -15,12 +15,17 @@ interface PortMapProps {
   showBreadcrumbTrail?: [number, number][]; // optional history path
 }
 
+const ENV_CENTER: [number, number] = [
+  parseFloat(process.env.NEXT_PUBLIC_DEFAULT_LNG || "81.0940"),
+  parseFloat(process.env.NEXT_PUBLIC_DEFAULT_LAT || "6.1235"),
+];
+
 export function PortMap({
   yards = [],
   vehicles = [],
   selectedVehicleId,
   onSelectVehicle,
-  center = [81.0940, 6.1235],
+  center = ENV_CENTER,
   zoom = 14.8,
   showBreadcrumbTrail,
 }: PortMapProps) {
