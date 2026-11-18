@@ -124,7 +124,14 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Default network fetch
-  event.respondWith(fetch(request));
+  // Default network fetch with safe fallback
+  event.respondWith(
+    fetch(request).catch(() => {
+      if (request.mode === "navigate") {
+        return caches.match("/offline").then((res) => res || new Response("Offline", { status: 503 }));
+      }
+      return new Response("", { status: 408, statusText: "Network unavailable" });
+    })
+  );
 });
 
