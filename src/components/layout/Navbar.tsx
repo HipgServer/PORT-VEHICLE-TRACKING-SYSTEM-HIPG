@@ -27,6 +27,11 @@ export function Navbar({ socketConnected = false }: NavbarProps) {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Hide Navbar completely on Driver screen and Login screen to prevent map access
+  if (pathname === "/login" || pathname === "/driver") {
+    return null;
+  }
+
   useEffect(() => {
     fetch("/api/auth/me")
       .then((res) => (res.ok ? res.json() : null))

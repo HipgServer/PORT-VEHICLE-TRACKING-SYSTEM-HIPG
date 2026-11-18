@@ -240,7 +240,9 @@ export function DriverDutyController({
   };
 
   const handleStopAndLogout = async () => {
-    if (!confirm("Are you sure you want to stop tracking and log out?")) return;
+    if (isOnDuty) {
+      if (!confirm("Are you sure you want to stop tracking and log out?")) return;
+    }
 
     setIsLoading(true);
     setErrorMsg("");
@@ -278,30 +280,41 @@ export function DriverDutyController({
   return (
     <div className="max-w-md mx-auto w-full space-y-4">
       {/* Driver Header Badge */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex items-center justify-between shadow-xl">
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-950/80 border border-emerald-800 flex items-center justify-center text-emerald-400">
-            <Truck className="w-5 h-5" />
+          <div className="w-11 h-11 rounded-xl bg-emerald-950/80 border border-emerald-800 flex items-center justify-center text-emerald-400">
+            <Truck className="w-6 h-6" />
           </div>
           <div>
-            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Active Port Driver</span>
-            <h2 className="text-base font-extrabold text-white leading-tight">
-              {driverName || "Driver"}
-            </h2>
+            <div className="flex items-center space-x-2">
+              <h2 className="text-base font-extrabold text-white leading-tight">
+                {driverName || "Driver"}
+              </h2>
+              <span
+                className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                  isOnDuty
+                    ? "bg-emerald-950 text-emerald-400 border border-emerald-700 animate-pulse"
+                    : "bg-slate-800 text-slate-400 border border-slate-700"
+                }`}
+              >
+                {isOnDuty ? "● ON DUTY" : "○ OFF DUTY"}
+              </span>
+            </div>
+            <p className="text-xs text-sky-400 font-mono font-bold mt-0.5">
+              Perry No: {activeSession?.vehicleId?.vehicleNumber || perryNo || "Not Selected"}
+            </p>
           </div>
         </div>
 
-        <div className="text-right">
-          <span
-            className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${
-              isOnDuty
-                ? "bg-emerald-950 text-emerald-400 border border-emerald-700 animate-pulse"
-                : "bg-slate-800 text-slate-400 border border-slate-700"
-            }`}
-          >
-            {isOnDuty ? "● ON DUTY" : "○ OFF DUTY"}
-          </span>
-        </div>
+        <button
+          type="button"
+          onClick={handleStopAndLogout}
+          className="px-3 py-2 bg-slate-800 hover:bg-rose-950/80 hover:border-rose-700 text-slate-300 hover:text-rose-400 border border-slate-700 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 shadow"
+          title="Log Out"
+        >
+          <LogOut className="w-4 h-4 text-rose-400" />
+          <span>Log Out</span>
+        </button>
       </div>
 
       {/* STEP 1: READINESS CHECKLIST (Data ON & Location ON) */}
@@ -443,6 +456,16 @@ export function DriverDutyController({
             >
               <Play className="w-5 h-5 fill-current" />
               <span>{isLoading ? "Starting Tracking..." : "START TRACKING"}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleStopAndLogout}
+              disabled={isLoading}
+              className="w-full py-2.5 bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs transition flex items-center justify-center space-x-1.5"
+            >
+              <LogOut className="w-3.5 h-3.5 text-rose-400" />
+              <span>Log Out & Exit</span>
             </button>
           </div>
         </div>

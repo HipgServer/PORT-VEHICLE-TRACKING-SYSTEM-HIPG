@@ -228,6 +228,19 @@ export default function LoginPage() {
                 <span>{loading ? "Connecting..." : "LOGIN AS DRIVER & TRACK"}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
+
+              <div className="pt-2 text-center border-t border-slate-800/80">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTab("admin");
+                    setError("");
+                  }}
+                  className="text-xs font-semibold text-slate-400 hover:text-sky-400 transition"
+                >
+                  Port Administrator? <span className="text-sky-400 underline underline-offset-4">Sign in to Admin Dashboard →</span>
+                </button>
+              </div>
             </form>
           </div>
         )}
@@ -279,6 +292,19 @@ export default function LoginPage() {
                 <LogIn className="w-4 h-4" />
                 <span>{loading ? "Authenticating..." : "SIGN IN AS ADMINISTRATOR"}</span>
               </button>
+
+              <div className="pt-2 text-center border-t border-slate-800/80">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveTab("driver");
+                    setError("");
+                  }}
+                  className="text-xs font-semibold text-slate-400 hover:text-emerald-400 transition"
+                >
+                  ← <span className="text-emerald-400 underline underline-offset-4">Back to Driver Login</span>
+                </button>
+              </div>
             </form>
           </div>
         )}
