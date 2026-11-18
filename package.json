@@ -1,0 +1,51 @@
+{
+  "name": "peri-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "tsx server.ts",
+    "dev:next": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "start:server": "tsx server.ts",
+    "seed": "tsx src/server/seed.ts",
+    "test": "tsx src/tests/runAllTests.ts",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@turf/boolean-point-in-polygon": "^7.2.0",
+    "@turf/helpers": "^7.2.0",
+    "bcryptjs": "^3.0.3",
+    "clsx": "^2.1.1",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "idb": "^8.0.3",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^1.16.0",
+    "maplibre-gl": "^5.1.1",
+    "mongoose": "^8.12.1",
+    "next": "^15.2.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "tailwind-merge": "^3.0.2",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^22.13.10",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.22.0",
+    "eslint-config-next": "^15.2.1",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}
+

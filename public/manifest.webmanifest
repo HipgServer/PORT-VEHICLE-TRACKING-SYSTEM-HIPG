@@ -1,0 +1,27 @@
+{
+  "name": "Port Vehicle & Yard Tracking Management System",
+  "short_name": "Peri Tracker",
+  "description": "Unified Port Vehicle & Yard Tracking Management System for Hambantota International Port",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#07264a",
+  "theme_color": "#0b85ea",
+  "icons": [
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "navigation", "logistics"],
+  "screenshots": []
+}
+

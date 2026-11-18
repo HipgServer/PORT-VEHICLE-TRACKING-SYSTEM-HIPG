@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: peri_tracker_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongo:27017/peri_tracker
+      - JWT_SECRET=super-secret-jwt-key-for-port-vehicle-tracker-2026-production
+      - NEXT_PUBLIC_SOCKET_URL=http://localhost:3000
+      - NEXT_PUBLIC_MAP_TILE_URL=https://tile.openstreetmap.org/{z}/{x}/{y}.png
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:7.0
+    container_name: peri_tracker_mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
+
