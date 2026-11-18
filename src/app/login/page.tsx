@@ -22,7 +22,7 @@ export default function LoginPage() {
   const handleDriverLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!driverName.trim()) {
-      setError("කරුණාකර රියදුරු නම (Driver Name) ඇතුළත් කරන්න.");
+      setError("Please enter your Driver Name.");
       return;
     }
 
@@ -117,7 +117,7 @@ export default function LoginPage() {
             }`}
           >
             <Compass className="w-4 h-4" />
-            <span>Driver Login (රියදුරු)</span>
+            <span>Driver Login</span>
           </button>
 
           <button
@@ -133,7 +133,7 @@ export default function LoginPage() {
             }`}
           >
             <ShieldCheck className="w-4 h-4" />
-            <span>Admin Login (පරිපාලක)</span>
+            <span>Admin Login</span>
           </button>
         </div>
 
@@ -148,16 +148,16 @@ export default function LoginPage() {
         {activeTab === "driver" && (
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-4">
             <div className="border-b border-slate-800 pb-3">
-              <h3 className="font-bold text-sm text-emerald-400">රියදුරු ප්‍රවේශය (Driver Portal)</h3>
+              <h3 className="font-bold text-sm text-emerald-400">Driver Portal Access</h3>
               <p className="text-[11px] text-slate-400 mt-0.5">
-                ඔබගේ නම සහ පැවරුණු Perry අංකය ඇතුළත් කර සජීවී ට්‍රැකින් සඳහා පිවිසෙන්න.
+                Enter your full name and assigned Perry number to begin live GPS tracking.
               </p>
             </div>
 
             <form onSubmit={handleDriverLogin} className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                  Driver Name (ඔබගේ නම) *
+                  Driver Name *
                 </label>
                 <div className="relative">
                   <User className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
@@ -166,7 +166,7 @@ export default function LoginPage() {
                     required
                     value={driverName}
                     onChange={(e) => setDriverName(e.target.value)}
-                    placeholder="උදා: Kamal Perera"
+                    placeholder="e.g. Johnathan Smith"
                     className="w-full pl-10 pr-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   />
                 </div>
@@ -174,7 +174,7 @@ export default function LoginPage() {
 
               <div>
                 <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                  Perry No / Vehicle No (පැවරුණු Perry අංකය)
+                  Perry No / Vehicle Identifier
                 </label>
                 <div className="relative">
                   <Truck className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
@@ -182,7 +182,7 @@ export default function LoginPage() {
                     type="text"
                     value={perryNo}
                     onChange={(e) => setPerryNo(e.target.value)}
-                    placeholder="උදා: PERI-01 හෝ TT-101"
+                    placeholder="e.g. PERI-01 or TT-101"
                     className="w-full pl-10 pr-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   />
                 </div>
@@ -193,7 +193,7 @@ export default function LoginPage() {
                 disabled={loading}
                 className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-sm transition shadow-lg shadow-emerald-950 disabled:opacity-50 flex items-center justify-center space-x-2"
               >
-                <span>{loading ? "සම්බන්ධ වෙමින්..." : "LOGIN AS DRIVER & TRACK"}</span>
+                <span>{loading ? "Connecting..." : "LOGIN AS DRIVER & TRACK"}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </form>
@@ -204,9 +204,9 @@ export default function LoginPage() {
         {activeTab === "admin" && (
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-4">
             <div className="border-b border-slate-800 pb-3">
-              <h3 className="font-bold text-sm text-sky-400">පරිපාලක ප්‍රවේශය (Administrator Dashboard)</h3>
+              <h3 className="font-bold text-sm text-sky-400">Administrator Portal</h3>
               <p className="text-[11px] text-slate-400 mt-0.5">
-                සම්පූර්ණ වරාය සිතියම, සියලු වාහන සහ Geofence නිරීක්ෂණය සඳහා පිවිසෙන්න.
+                Access the full port GIS map, fleet status, and geofence telemetry dashboard.
               </p>
             </div>
 

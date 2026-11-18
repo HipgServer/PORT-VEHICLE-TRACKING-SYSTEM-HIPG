@@ -9,12 +9,41 @@ export async function testDutySession(): Promise<boolean> {
   console.log("▶ Testing Duty Session Lifecycle & Validation Rules...");
   await connectDB();
 
-  // Find seeded driver and vehicle
-  const driver = await Driver.findOne();
-  const vehicle = await Vehicle.findOne();
+  // Find or create temporary test driver and vehicle
+  let driver = await Driver.findOne();
+  let vehicle = await Vehicle.findOne();
+  let createdTempDriver = false;
+  let createdTempVehicle = false;
 
-  if (!driver || !vehicle) {
-    throw new Error("Seed database required before running duty tests");
+  if (!vehicle) {
+    vehicle = await Vehicle.create({
+      vehicleNumber: "TEST-TT-999",
+      type: "terminal_tractor",
+      makeModel: "Test Kalmar 4x2",
+      licensePlate: "TEST-PLATE-999",
+      status: "active",
+      maxSpeedKmh: 45,
+    });
+    createdTempVehicle = true;
+  }
+
+  if (!driver) {
+    const tempUser = await User.create({
+      username: `test_driver_${Date.now()}`,
+      email: `test_driver_${Date.now()}@hipg.lk`,
+      passwordHash: "testhash123",
+      fullName: "Test Automated Driver",
+      role: "driver",
+      active: true,
+    });
+    driver = await Driver.create({
+      userId: tempUser._id,
+      employeeId: "TEST-EMP-999",
+      licenseNumber: "DL-TEST-999",
+      licenseExpiry: new Date("2030-01-01"),
+      status: "available",
+    });
+    createdTempDriver = true;
   }
 
   // 1. Create Active Duty Session
@@ -66,8 +95,15 @@ export async function testDutySession(): Promise<boolean> {
   }
   console.log("  ✔ Supervisor Recovery & Duty Completion passed");
 
-  // Clean up test session
+  // Clean up test session and temporary entities
   await DutySession.findByIdAndDelete(session._id);
+  if (createdTempVehicle && vehicle) {
+    await Vehicle.findByIdAndDelete(vehicle._id);
+  }
+  if (createdTempDriver && driver) {
+    await User.findByIdAndDelete(driver.userId);
+    await Driver.findByIdAndDelete(driver._id);
+  }
 
   return true;
 }

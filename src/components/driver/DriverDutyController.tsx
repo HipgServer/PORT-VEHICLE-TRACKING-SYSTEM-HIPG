@@ -169,7 +169,7 @@ export function DriverDutyController({
 
   const handleStartDuty = async () => {
     if (!perryNo.trim()) {
-      setErrorMsg("කරුණාකර Perry අංකය (Perry No) ඇතුළත් කරන්න.");
+      setErrorMsg("Please enter your Perry No or Vehicle Identifier.");
       return;
     }
 
@@ -225,7 +225,7 @@ export function DriverDutyController({
   };
 
   const handleStopAndLogout = async () => {
-    if (!confirm("ඔබට සැබවින්ම ට්‍රැකින් නවතා Log Out වීමට අවශ්‍යද?")) return;
+    if (!confirm("Are you sure you want to stop tracking and log out?")) return;
 
     setIsLoading(true);
     setErrorMsg("");
@@ -292,7 +292,7 @@ export function DriverDutyController({
       {/* STEP 1: READINESS CHECKLIST (Data ON & Location ON) */}
       <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-3 shadow-lg">
         <span className="text-[10px] font-extrabold text-sky-400 uppercase tracking-wider block">
-          පූර්ව පරීක්ෂාව (System Readiness Checks)
+          Pre-Operation System Readiness Checks
         </span>
 
         <div className="space-y-2">
@@ -313,7 +313,7 @@ export function DriverDutyController({
                   : "bg-rose-950 text-rose-400 border border-rose-800 animate-pulse"
               }`}
             >
-              {isOnline ? "Connected (On)" : "Offline (Data On කරන්න)"}
+              {isOnline ? "Connected (Online)" : "Offline (Turn Mobile Data On)"}
             </span>
           </div>
 
@@ -325,7 +325,7 @@ export function DriverDutyController({
               ) : (
                 <MapPinOff className="w-4 h-4 text-amber-400" />
               )}
-              <span className="font-semibold text-slate-200">Phone GPS / Location</span>
+              <span className="font-semibold text-slate-200">Device GPS Location</span>
             </div>
 
             {hasGpsPermission ? (
@@ -362,7 +362,7 @@ export function DriverDutyController({
       {!isOnDuty ? (
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-2xl space-y-4">
           <div className="border-b border-slate-800 pb-2">
-            <h3 className="font-bold text-sm text-white">වාහන තොරතුරු ඇතුළත් කරන්න</h3>
+            <h3 className="font-bold text-sm text-white">Vehicle & Driver Information</h3>
             <p className="text-[11px] text-slate-400">
               Enter your assigned Perry number to connect live tracking.
             </p>
@@ -371,7 +371,7 @@ export function DriverDutyController({
           <div className="space-y-3">
             <div>
               <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
-                Perry No / Vehicle No (Perry අංකය) *
+                Perry No / Vehicle Identifier *
               </label>
               <div className="relative">
                 <Truck className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
@@ -380,7 +380,7 @@ export function DriverDutyController({
                   required
                   value={perryNo}
                   onChange={(e) => setPerryNo(e.target.value.toUpperCase())}
-                  placeholder="උදා: PERI-01 හෝ TT-101"
+                  placeholder="e.g. PERI-01 or TT-101"
                   className="w-full pl-10 pr-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm font-bold text-white uppercase placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
@@ -405,7 +405,7 @@ export function DriverDutyController({
 
             <div>
               <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
-                Driver Name (රියදුරු නම) *
+                Driver Name *
               </label>
               <div className="relative">
                 <User className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
@@ -414,7 +414,7 @@ export function DriverDutyController({
                   required
                   value={driverName}
                   onChange={(e) => setDriverName(e.target.value)}
-                  placeholder="Kamal Perera"
+                  placeholder="e.g. Johnathan Smith"
                   className="w-full pl-10 pr-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm font-medium text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
@@ -427,7 +427,7 @@ export function DriverDutyController({
               className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl text-base shadow-xl shadow-emerald-950 flex items-center justify-center space-x-2 transition disabled:opacity-50 mt-2"
             >
               <Play className="w-5 h-5 fill-current" />
-              <span>{isLoading ? "Starting Tracking..." : "START TRACKING (ට්‍රැකින් අරඹන්න)"}</span>
+              <span>{isLoading ? "Starting Tracking..." : "START TRACKING"}</span>
             </button>
           </div>
         </div>
@@ -472,7 +472,7 @@ export function DriverDutyController({
 
           {/* Critical Backgrounding Reminder */}
           <div className="p-3 bg-amber-950/60 border border-amber-800 rounded-xl text-amber-200 text-xs leading-relaxed">
-            <strong>⚠️ වැදගත් උපදෙස:</strong> මෙම App එක Close නොකරන්න. Screen එක On කර හෝ Background එකේ තබාගෙන ඔබගේ රාජකාරි කටයුතු කරගෙන යන්න. ඔබගේ Live Location එක Administrator ගේ Map එකේ පෙනේ.
+            <strong>⚠️ Notice:</strong> Keep this application open in your browser or running in the background. Your live coordinates are being transmitted to the Port Operations Center in real-time.
           </div>
 
           {/* STOP TRACKING & LOGOUT BUTTON */}
@@ -483,7 +483,7 @@ export function DriverDutyController({
             className="w-full py-3.5 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-sm shadow-xl shadow-rose-950 flex items-center justify-center space-x-2 transition disabled:opacity-50"
           >
             <Square className="w-4 h-4 fill-current" />
-            <span>{isLoading ? "Stopping..." : "STOP TRACKING & LOG OUT (ට්‍රැකින් නවතා ඉවත් වන්න)"}</span>
+            <span>{isLoading ? "Stopping..." : "STOP TRACKING & LOG OUT"}</span>
           </button>
         </div>
       )}
