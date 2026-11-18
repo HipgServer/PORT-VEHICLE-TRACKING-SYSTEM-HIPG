@@ -9,6 +9,7 @@
     "start": "next start",
     "start:server": "tsx server.ts",
     "seed": "tsx src/server/seed.ts",
+    "clean": "tsx src/server/clearSampleData.ts",
     "test": "tsx src/tests/runAllTests.ts",
     "lint": "next lint"
   },

@@ -75,6 +75,17 @@ export function VehicleTable({
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800/60 font-medium">
+            {filtered.length === 0 && (
+              <tr>
+                <td colSpan={5} className="text-center py-12 text-slate-400">
+                  <Truck className="w-8 h-8 mx-auto mb-2 opacity-40 text-sky-400" />
+                  <p className="text-sm font-semibold text-slate-300">තවම වාහන සක්‍රීය වී නොමැත (No vehicles on duty)</p>
+                  <p className="text-xs text-slate-500 mt-1">
+                    Driver කෙනෙකු Phone එකෙන් හෝ Tablet එකෙන් Perry No ඇතුළත් කර Start කළ විට මෙහි සජීවීව දිස්වේ.
+                  </p>
+                </td>
+              </tr>
+            )}
             {filtered.map((v) => {
               const isSelected = selectedVehicleId === v.id;
               const isInterrupted =
